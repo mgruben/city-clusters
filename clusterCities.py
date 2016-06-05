@@ -138,10 +138,10 @@ class ClusterSet(object):
         clusters in self
         Closest defined using the metric linkage """
         space = len(self.members)
-        closestDistance = self.members[0].linkage(self.members[0])
+        closestDistance = linkage(self.members[0], self.members[1])
         for i in range(space - 1):
             for j in range(i, space):
-                thisDistance = self.members[i].linkage(self.members[j])
+                thisDistance = linkage(self.members[i], self.members[j])
                 if thisDistance < closestDistance:
                     closestDistance = thisDistance
                     closestPair = (self.members[i], self.members[j])
@@ -150,8 +150,8 @@ class ClusterSet(object):
         """ Merges the two most similar clusters in self
         Similar defined using the metric linkage
         Returns the clusters that were merged """
-        (c1, c2) = findClosest(linkage)
-        mergeClusters(c1, c2)
+        (c1, c2) = self.findClosest(linkage)
+        self.mergeClusters(c1, c2)
         return (c1, c2)
     def numClusters(self):
         return len(self.members)
