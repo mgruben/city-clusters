@@ -137,11 +137,11 @@ class ClusterSet(object):
         """ Assumes clusters c1 and c2 are in self
         Adds to self a cluster containing the union of c1 and c2
         and removes c1 and c2 from self """
-        jointPoints = set([])
+        jointPoints = []
         for point in c1.points:
-            jointPoints.add(point)
+            jointPoints.append(point)
         for point in c2.points:
-            jointPoints.add(point)
+            jointPoints.append(point)
         c3 = Cluster(jointPoints, c1.pointType)
         self.remove(c1)
         self.remove(c2)
