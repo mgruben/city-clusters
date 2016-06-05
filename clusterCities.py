@@ -138,7 +138,7 @@ class ClusterSet(object):
         c3 = Cluster(jointPoints, c1.pointType)
         self.members.remove(c1)
         self.members.remove(c2)
-        self.members.append(c3)
+        self.add(c3)
     def findClosest(self, linkage):
         """ Returns a tuple containing the two most similar 
         clusters in self
