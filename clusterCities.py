@@ -1,17 +1,17 @@
 #Code shared across examples
 import pylab, string
 
-def stdDev(X):
-    mean = sum(X)/float(len(X))
+def stdDev(X): ## could be imported from statistics, pstdev
+    mean = sum(X) / float(len(X))
     tot = 0.0
     for x in X:
         tot += (x - mean)**2
-    return (tot/len(X))**0.5
+    return (tot / len(X))**0.5
 
-def scaleFeatures(vals):
+def scaleFeatures(vals):  ## returned range exceeds (0,1)?
     """Assumes vals is a sequence of numbers"""
     result = pylab.array(vals)
-    mean = sum(result)/float(len(result))
+    mean = sum(result) / float(len(result))
     result = result - mean
     sd = stdDev(result)
     result = result/sd
@@ -27,7 +27,7 @@ class Point(object):
     def getAttrs(self):
         return self.attrs
     def distance(self, other):
-        #Euclidean distance metric
+        #Euclidean distance metric, p = 2
         result = 0.0
         for i in range(self.dimensionality()):
             result += (self.attrs[i] - other.attrs[i])**2
@@ -40,7 +40,7 @@ class Point(object):
         return self.name        
     
 class Cluster(object):
-    """ A Cluster is defines as a set of elements, all having 
+    """ A Cluster is defined as a set of elements, all having 
     a particular type """
     def __init__(self, points, pointType):
         """ Elements of a cluster are saved in self.points
@@ -52,22 +52,34 @@ class Cluster(object):
         are closest to each other, where one point is from 
         self and the other point is from other. Uses the 
         Euclidean dist between 2 points, defined in Point."""
-        # TO DO
-        pass
+        shortest = self.points[0].distance(other)
+        for point in self.points:
+            thisDistance = point.distance(other)
+            if thisDistance < shortest:
+                shortest = thisDistance
+        return shortest
     def maxLinkageDist(self, other):
         """ Returns the float distance between the points that 
         are farthest from each other, where one point is from 
         self and the other point is from other. Uses the 
         Euclidean dist between 2 points, defined in Point."""
-        # TO DO
-        pass
+        farthest = 0.0
+        for point in self.points:
+            thiDistance = point.distance(other)
+            if thisDistance > farthest:
+                farthest = thisDistance
+        return farthest
     def averageLinkageDist(self, other):
         """ Returns the float average (mean) distance between all 
         pairs of points, where one point is from self and the 
         other point is from other. Uses the Euclidean dist 
         between 2 points, defined in Point."""
-        # TO DO
-        pass
+        sum = 0.0
+        count = 0
+        for point in self.points:
+            sum += point.distance(other)
+            count += 1
+        return sum / count
     def members(self):
         for p in self.points:
             yield p
@@ -204,7 +216,7 @@ def hCluster(points, linkage, numClusters, printHistory):
         merged = cS.mergeOne(linkage)
         history.append(merged)
     if printHistory:
-        print ''
+        print('')
         for i in range(len(history)):
             names1 = []
             for p in history[i][0].members():
@@ -212,10 +224,10 @@ def hCluster(points, linkage, numClusters, printHistory):
             names2 = []
             for p in history[i][1].members():
                 names2.append(p.getName())
-            print 'Step', i, 'Merged', names1, 'with', names2
-            print ''
-    print 'Final set of clusters:'
-    print cS.toStr()
+            print('Step', i, 'Merged', names1, 'with', names2)
+            print('')
+    print('Final set of clusters:')
+    print(cS.toStr())
     return cS
 
 def test():
@@ -227,5 +239,4 @@ def test():
     #hCluster(points, Cluster.singleLinkageDist, 10, False)
 
 #test()
-
 
