@@ -139,6 +139,7 @@ class ClusterSet(object):
         Closest defined using the metric linkage """
         space = len(self.members)
         closestDistance = linkage(self.members[0], self.members[1])
+        closestPair = ()
         for i in range(space - 1):
             for j in range(i, space):
                 thisDistance = linkage(self.members[i], self.members[j])
