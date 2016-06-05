@@ -147,11 +147,12 @@ class ClusterSet(object):
                     closestPair = (self.members[i], self.members[j])
         return closestPair
     def mergeOne(self, linkage):
-        """ Merges the two most simililar clusters in self
+        """ Merges the two most similar clusters in self
         Similar defined using the metric linkage
         Returns the clusters that were merged """
-        # TO DO
-        pass
+        (c1, c2) = findClosest(linkage)
+        mergeClusters(c1, c2)
+        return (c1, c2)
     def numClusters(self):
         return len(self.members)
     def toStr(self):
