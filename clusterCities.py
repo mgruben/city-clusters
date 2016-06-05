@@ -52,11 +52,12 @@ class Cluster(object):
         are closest to each other, where one point is from 
         self and the other point is from other. Uses the 
         Euclidean dist between 2 points, defined in Point."""
-        shortest = self.points[0].distance(other)
-        for point in self.points:
-            thisDistance = point.distance(other)
-            if thisDistance < shortest:
-                shortest = thisDistance
+        shortest = self.points[0].distance(other.points[0])
+        for i in self.points:
+            for j in other.points:
+                thisDistance = i.distance(j)
+                if thisDistance < shortest:
+                    shortest = thisDistance
         return shortest
     def maxLinkageDist(self, other):
         """ Returns the float distance between the points that 
@@ -64,10 +65,11 @@ class Cluster(object):
         self and the other point is from other. Uses the 
         Euclidean dist between 2 points, defined in Point."""
         farthest = 0.0
-        for point in self.points:
-            thiDistance = point.distance(other)
-            if thisDistance > farthest:
-                farthest = thisDistance
+        for i in self.points:
+            for j in other.points:
+                thisDistance = i.distance(j)
+                if thisDistance > farthest:
+                    farthest = thisDistance
         return farthest
     def averageLinkageDist(self, other):
         """ Returns the float average (mean) distance between all 
@@ -76,14 +78,15 @@ class Cluster(object):
         between 2 points, defined in Point."""
         sum = 0.0
         count = 0
-        for point in self.points:
-            sum += point.distance(other)
-            count += 1
+        for i in self.points:
+            for j in other.points:                
+                sum += i.distance(j)
+                count += 1
         return sum / count
     def members(self):
         for p in self.points:
             yield p
-    def isIn(self, name):
+    def isIn(self, name): # may want this as a dictionary elsewhere?
         """ Returns True is the element named name is in the cluster
         and False otherwise """
         for p in self.points:
@@ -111,7 +114,7 @@ class Cluster(object):
 
 class ClusterSet(object):
     """ A ClusterSet is defined as a list of clusters """
-    def __init__(self, pointType):
+    def __init__(self, pointType): #Why passed pointType if not caught?
         """ Initialize an empty set, without any clusters """
         self.members = []
     def add(self, c):
@@ -127,14 +130,22 @@ class ClusterSet(object):
         """ Assumes clusters c1 and c2 are in self
         Adds to self a cluster containing the union of c1 and c2
         and removes c1 and c2 from self """
-        # TO DO
-        pass
+        self.members.remove(c1)
+        self.members.remove(c2)
+        self.members.append([c1,c2])
     def findClosest(self, linkage):
         """ Returns a tuple containing the two most similar 
         clusters in self
         Closest defined using the metric linkage """
-        # TO DO
-        pass
+        space = len(self.members)
+        closestDistance = self.members[0].linkage(self.members[0])
+        for i in range(space - 1):
+            for j in range(i, space):
+                thisDistance = self.members[i].linkage(self.members[j])
+                if thisDistance < closestDistance:
+                    closestDistance = thisDistance
+                    closestPair = (self.members[i], self.members[j])
+        return closestPair
     def mergeOne(self, linkage):
         """ Merges the two most simililar clusters in self
         Similar defined using the metric linkage
