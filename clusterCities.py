@@ -130,9 +130,10 @@ class ClusterSet(object):
         """ Assumes clusters c1 and c2 are in self
         Adds to self a cluster containing the union of c1 and c2
         and removes c1 and c2 from self """
+        c3 = list(set().union(c1, c2))
         self.members.remove(c1)
         self.members.remove(c2)
-        self.members.append([c1,c2])
+        self.members.append(c3)
     def findClosest(self, linkage):
         """ Returns a tuple containing the two most similar 
         clusters in self
