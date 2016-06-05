@@ -137,7 +137,6 @@ class ClusterSet(object):
         """ Assumes clusters c1 and c2 are in self
         Adds to self a cluster containing the union of c1 and c2
         and removes c1 and c2 from self """
-        print c1 in self.members
         jointPoints = set([])
         for point in c1.points:
             jointPoints.add(point)
@@ -207,7 +206,7 @@ def readCityData(fName, scale = False):
         
     #Continue processing lines in file, starting after comments
     for line in dataFile:
-        dataLine = string.split(line[:-1], ',') #remove newline; then split
+        dataLine = line[:-1].split(',') #remove newline; then split
         cityNames.append(dataLine[0])
         for i in range(numFeatures):
             featureVals[i].append(float(dataLine[i+1]))
