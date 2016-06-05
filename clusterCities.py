@@ -124,20 +124,28 @@ class ClusterSet(object):
         if c in self.members:
             raise ValueError
         self.members.append(c)
+    def remove(self, c):
+        """ Removes a cluster from the cluster list
+        only if it exists in self.members.  If it does not exist
+        in the cluster set, raise a ValueError """
+        if c not in self.members:
+            raise ValueError
+        self.members.remove(c)
     def getClusters(self):
         return self.members[:]
     def mergeClusters(self, c1, c2):
         """ Assumes clusters c1 and c2 are in self
         Adds to self a cluster containing the union of c1 and c2
         and removes c1 and c2 from self """
+        print c1 in self.members
         jointPoints = set([])
         for point in c1.points:
             jointPoints.add(point)
         for point in c2.points:
             jointPoints.add(point)
         c3 = Cluster(jointPoints, c1.pointType)
-        self.members.remove(c1)
-        self.members.remove(c2)
+        self.remove(c1)
+        self.remove(c2)
         self.add(c3)
     def findClosest(self, linkage):
         """ Returns a tuple containing the two most similar 
@@ -145,9 +153,9 @@ class ClusterSet(object):
         Closest defined using the metric linkage """
         space = len(self.members)
         closestDistance = linkage(self.members[0], self.members[1])
-        closestPair = ()
+        closestPair = (self.members[0], self.members[1])
         for i in range(space - 1):
-            for j in range(i, space):
+            for j in range(i + 1, space):
                 thisDistance = linkage(self.members[i], self.members[j])
                 if thisDistance < closestDistance:
                     closestDistance = thisDistance
@@ -249,13 +257,14 @@ def hCluster(points, linkage, numClusters, printHistory):
     print(cS.toStr())
     return cS
 
+fullFileName = "/home/human/edX/6.00.2x/Python Problem Sets/PS6/ProblemSet6/cityTemps.txt"
 def test():
-    points = buildCityPoints('cityTemps.txt', False)
+    points = buildCityPoints(fullFileName, False)
     hCluster(points, Cluster.singleLinkageDist, 10, False)
     #points = buildCityPoints('cityTemps.txt', True)
     #hCluster(points, Cluster.maxLinkageDist, 10, False)
     #hCluster(points, Cluster.averageLinkageDist, 10, False)
     #hCluster(points, Cluster.singleLinkageDist, 10, False)
 
-#test()
+test()
 
