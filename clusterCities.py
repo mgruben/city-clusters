@@ -267,7 +267,7 @@ def test():
     #~ hCluster(points, Cluster.singleLinkageDist, 10, False)
     
     points = buildCityPoints(fullFileName, True)
-    hCluster(points, Cluster.singleLinkageDist, 5, False)
+    hCluster(points, Cluster.singleLinkageDist, 5, True)
     points = buildCityPoints(fullFileName, False)
     hCluster(points, Cluster.singleLinkageDist, 5, False)
 
