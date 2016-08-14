@@ -257,13 +257,20 @@ def hCluster(points, linkage, numClusters, printHistory):
     return cS
 
 fullFileName = "/home/human/edX/6.00.2x/Python Problem Sets/PS6/ProblemSet6/cityTemps.txt"
-def test():
-    points = buildCityPoints(fullFileName, False)
-    hCluster(points, Cluster.singleLinkageDist, 10, False)
-    #points = buildCityPoints('cityTemps.txt', True)
-    #hCluster(points, Cluster.maxLinkageDist, 10, False)
-    #hCluster(points, Cluster.averageLinkageDist, 10, False)
-    #hCluster(points, Cluster.singleLinkageDist, 10, False)
 
-test()
+def test():
+    #~ points = buildCityPoints(fullFileName, False)
+    #~ hCluster(points, Cluster.singleLinkageDist, 10, False)
+    #points = buildCityPoints('cityTemps.txt', True)
+    #~ hCluster(points, Cluster.maxLinkageDist, 10, False)
+    #~ hCluster(points, Cluster.averageLinkageDist, 10, False)
+    #~ hCluster(points, Cluster.singleLinkageDist, 10, False)
+    
+    points = buildCityPoints(fullFileName, True)
+    hCluster(points, Cluster.singleLinkageDist, 5, False)
+    points = buildCityPoints(fullFileName, False)
+    hCluster(points, Cluster.singleLinkageDist, 5, False)
+
+if __name__=="__main__":
+    test()
 
